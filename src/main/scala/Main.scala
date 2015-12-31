@@ -5,13 +5,23 @@ object Main {
     val conf = new SparkConf().setAppName("Learning Spark").setMaster("local[2]")
     val sc = new SparkContext(conf)
 
-    //WordCount.Count3(sc)
-    //Pairs.Transform(sc)
-    //SQL.Test(sc)
-    //Streaming.Stream(sc)
-    MachineLearning.Predict(sc)
-    //Pi.Calculate(sc)
-    //GraphX.Test()
+    var input = ""
+    do {
+      println("Enter app to run or 'quit' to exit:")
+      input = scala.io.StdIn.readLine().toLowerCase()
+
+      input match {
+        case "streaming" => Streaming.Stream(sc)
+        case "mllib" => MachineLearning.Predict(sc)
+        case "pairs" => Pairs.Transform(sc)
+        case "sql" => SQL.Test(sc)
+        case "pi" => Pi.Calculate(sc)
+        case "graphx" => GraphX.Test(sc)
+        case _ => Nil
+      }
+    }
+    while (input != "quit")
+
 
     sc.stop()
   }
