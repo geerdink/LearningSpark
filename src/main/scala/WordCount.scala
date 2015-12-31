@@ -1,12 +1,9 @@
 import org.apache.spark.{SparkContext, SparkConf}
 
 object WordCount {
-  val conf = new SparkConf().setAppName("wordCount").setMaster("local[2]")
-  val sc = new SparkContext(conf)
+  def Count(sc: SparkContext) = {
+    val tf = sc.textFile("D:\\Programs\\Spark\\CHANGES.txt", 2).cache()
 
-  val tf = sc.textFile("D:\\Programs\\Spark\\CHANGES.txt", 2).cache()
-
-  def Count() = {
     val words = tf.flatMap(line => line.split(" "))
     val counts = words.map(word => (word, 1)).reduceByKey { case (x, y) => x + y }
 
@@ -14,10 +11,11 @@ object WordCount {
 
     println(counts)
     //counts.saveAsTextFile("D:\\Programs\\Spark\\wordcount.txt")
-    sc.stop()
   }
 
-  def Count2() = {
+  def Count2(sc: SparkContext) = {
+    val tf = sc.textFile("D:\\Programs\\Spark\\CHANGES.txt", 2).cache()
+
     var input = ""
     do {
       println("Enter search term or 'quit' to exit:")
@@ -34,14 +32,13 @@ object WordCount {
     } while (input != "quit")
 
     println("Quit...")
-    sc.stop()
   }
 
-  def Count3() = {
+  def Count3(sc: SparkContext) = {
+    val tf = sc.textFile("D:\\Programs\\Spark\\CHANGES.txt", 2).cache()
+
     val counts = tf.flatMap(line => line.split(" ")).countByValue()
     counts.foreach{case (key, value) => println(value + " <- " + key)}
-
-    sc.stop()
   }
 }
 

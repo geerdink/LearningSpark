@@ -4,13 +4,11 @@ import org.apache.spark.mllib.feature.HashingTF
 import org.apache.spark.mllib.classification.LogisticRegressionWithSGD
 
 object MachineLearning {
-  val conf = new SparkConf().setAppName("Machine Learning").setMaster("local[2]")
-  val sc = new SparkContext(conf)
+  def Predict(sc: SparkContext) = {
+    // load data
+    val spam = sc.textFile("data/spam.txt")
+    val normal = sc.textFile("data/ham.txt")
 
-  val spam = sc.textFile("data/spam.txt")
-  val normal = sc.textFile("data/ham.txt")
-
-  def Predict() = {
     // Create a HashingTF instance to map email text to vectors of 10,000 features.
     val tf = new HashingTF(numFeatures = 10000)
 

@@ -2,10 +2,7 @@ import org.apache.spark.sql.hive.HiveContext
 import org.apache.spark.{SparkContext, SparkConf}
 
 object SQL {
-  val conf = new SparkConf().setAppName("Spark SQL").setMaster("local[2]")
-  val sc = new SparkContext(conf)
-
-  def Test() = {
+  def Test(sc: SparkContext) = {
     val hc = new HiveContext(sc)
 
     val input = hc.read.json("data//testweet.json")
@@ -19,7 +16,5 @@ object SQL {
     topTweetsText.foreach(println)
 
     input.printSchema()
-
-    sc.stop()
   }
 }

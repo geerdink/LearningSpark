@@ -2,10 +2,7 @@ import scala.math.random
 import org.apache.spark._
 
 object Pi {
-  val conf = new SparkConf().setAppName("Spark Pi")
-  val sc = new SparkContext(conf)
-
-  def Calculate() = {
+  def Calculate(sc: SparkContext) = {
     val slices = 2
     val n = 100000 * slices
 
@@ -16,6 +13,5 @@ object Pi {
     }.reduce(_ + _)
 
     println("Pi is roughly " + 4.0 * count / n)
-    sc.stop()
   }
 }

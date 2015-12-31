@@ -5,10 +5,7 @@ import org.apache.spark.rdd.RDD
 object GraphX {
   case class Peep(name: String, age: Int)
 
-  val conf = new SparkConf().setAppName("GraphX").setMaster("local[2]")
-  val sc = new SparkContext(conf)
-
-  def Test() = {
+  def Test(sc: SparkContext) = {
     val nodeArray = Array(
       (1L, Peep("Kim", 23)), (2L, Peep("Pat", 31)),
       (3L, Peep("Chris", 52)), (4L, Peep("Kelly", 39)),
@@ -30,8 +27,6 @@ object GraphX {
     for (triplet <- results.collect) {
       println(s"${triplet.srcAttr.name} loves ${triplet.dstAttr.name}")
     }
-
-    sc.stop()
   }
 }
 
