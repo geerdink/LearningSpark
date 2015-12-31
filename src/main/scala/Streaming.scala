@@ -10,6 +10,11 @@ object Streaming {
     val errorLines = lines.filter(_.contains("error"))
     errorLines.print()
 
+    ssc.start()  // it's necessary to explicitly tell the StreamingContext to start receiving data
+    ssc.awaitTermination()  // wait for the job to finish
+
+    // To test the application by typing input lines:  nc localhost 7777
+
     //val txt = ssc.textFileStream("~//data//test")
     //txt.countByWindow(10 seconds, 2 seconds)
 

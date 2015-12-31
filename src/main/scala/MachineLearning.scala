@@ -3,6 +3,9 @@ import org.apache.spark.mllib.regression.LabeledPoint
 import org.apache.spark.mllib.feature.HashingTF
 import org.apache.spark.mllib.classification.LogisticRegressionWithSGD
 
+import org.apache.spark.mllib.stat._
+import org.apache.spark.mllib.evaluation._
+
 object MachineLearning {
   def Predict(sc: SparkContext) = {
     // load data
@@ -16,6 +19,9 @@ object MachineLearning {
     val spamFeatures = spam.map(email => tf.transform(email.split(" ")))
     val normalFeatures = normal.map(email => tf.transform(email.split(" ")))
 
+    // show some statistics
+    println("Number of spam records: " + Statistics.colStats(spamFeatures).count)
+
     // Create LabeledPoint datasets for positive (spam) and negative (normal) examples.
     val positiveExamples = spamFeatures.map(features => LabeledPoint(1, features))
     val negativeExamples = normalFeatures.map(features => LabeledPoint(0, features))
@@ -26,6 +32,9 @@ object MachineLearning {
 
     // Run Logistic Regression using the SGD algorithm.
     val model = new LogisticRegressionWithSGD().run(trainingData)
+
+    // model evaluation
+    //println("Mean average precision: " + new RankingMetrics(model).meanAveragePrecision)
 
     // Test on a positive example (spam) and a negative one (normal).
     val posTest = tf.transform("O M G GET cheap stuff by sending money to ...".split(" "))
