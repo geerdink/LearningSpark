@@ -22,7 +22,6 @@ object Main {
     }
     while (input != "quit")
 
-
     sc.stop()
   }
 }
